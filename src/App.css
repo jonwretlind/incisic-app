@@ -1,0 +1,28 @@
+.App {
+  margin: 0px;
+  border: 1px solid #ccc;
+  height: 98vh;
+  overflow: hidden;
+  background-image: url('./img/asset_money_bg.png');
+}
+
+.App-logo {
+  height: 8vh;
+  pointer-events: none;
+}
+
+.App-header {
+  min-height: 12vh;
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 16px;
+  color: #777;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #eee;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 5px 0px 5px rgba(0,0,0,.2);
+}
+
+.App-header .col1 { width: 50%; text-align: right;}
+.App-header .col2 { width: 50%; }
