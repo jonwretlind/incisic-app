@@ -56,7 +56,7 @@ class MyCurve extends Component {
 
     //then draw chart canvas
     var vis = d3.select("#Canvas"),
-      WIDTH = 600,
+      WIDTH = 800,
       HEIGHT = 400,
       MARGINS = {
         top: 50,
