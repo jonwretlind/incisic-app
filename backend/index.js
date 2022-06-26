@@ -7,7 +7,7 @@ const userData = require("./models/userdata");
 const contentRangeHook = require('./hooks/contentRangeHook');
 const app = fastify;
 app.register(require('fastify-cors'), {
-  origin: 'https://localhost:3000',
+  origin: 'http://localhost:3000',
 });
 
 try {
