@@ -7,9 +7,9 @@ import Traverse from './helpers/traverse';
 // TODO: User logins with uiuds
 // this one is just hard-coded for testing and building
 let relAddr = window.location.href.split(":")[1];
-let userId = "61a071eadb69693e877d18e0";
-let api = "http://0.0.0.0:4000/api/user/";
-console.log(api);
+let userId = "62c098ec1825037420a950f9";
+let api = "http://localhost:4000/api/user/";
+console.log(api + userId);
 
 class PersonalProfile extends Component {
   constructor() {
