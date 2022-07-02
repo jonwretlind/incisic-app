@@ -1,13 +1,14 @@
 const fastify = require('fastify')({ logger: true });
 const mongoose = require("mongoose");
 const PORT = 4000;
-const DB_URL = "mongodb://0.0.0.0:27017/incisic_app";
+const DB_URL = "mongodb://127.0.0.1:27017/incisic_app";
 const userRoutes = require('./routes/user')
 const userData = require("./models/userdata");
 const contentRangeHook = require('./hooks/contentRangeHook');
 const app = fastify;
+
 app.register(require('fastify-cors'), {
-  origin: 'http://localhost:3000',
+  origin: 'https://0.0.0.0:3000',
 });
 
 try {
@@ -25,7 +26,7 @@ connection.once("open", function () {
 app.addHook('preHandler', contentRangeHook);
 userRoutes(app, userData);
 
-app.get('/', (req, res) => {
+app.get('/backend', (req, res) => {
   res.send('Hello, this is the Incisic Backend Server at your service!');
 })
 
