@@ -8,7 +8,8 @@ const contentRangeHook = require('./hooks/contentRangeHook');
 const app = fastify;
 
 app.register(require('fastify-cors'), {
-  origin: 'https://0.0.0.0:3000',
+  origin: true,
+  allowedHeaders: 'Content-Type'
 });
 
 try {
@@ -26,7 +27,7 @@ connection.once("open", function () {
 app.addHook('preHandler', contentRangeHook);
 userRoutes(app, userData);
 
-app.get('/backend', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello, this is the Incisic Backend Server at your service!');
 })
 
