@@ -1,5 +1,7 @@
 const fastify = require('fastify')({ logger: true });
 const mongoose = require("mongoose");
+// API port 3001 is proxied on remote Nginx server
+// to port 4000 in /etc/nginx/sites-enabled/incisic
 const PORT = 4000;
 const DB_URL = "mongodb://127.0.0.1:27017/incisic_app";
 const userRoutes = require('./routes/user')

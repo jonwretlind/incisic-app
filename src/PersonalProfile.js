@@ -8,6 +8,8 @@ import Traverse from './helpers/traverse';
 // this one is just hard-coded for testing and building
 let relAddr = window.location.href.split(":")[1];
 let userId = "62c098ec1825037420a950f9";
+// API port 3001 is proxied on remote Nginx server
+// to port 4000 in /etc/nginx/sites-enabled/incisic
 let api = "http://apps.jonwretlind.com:3001/api/user/";
 console.log(api + userId);
 
@@ -28,36 +30,36 @@ class PersonalProfile extends Component {
 
   componentDidMount() {
     fetch(api + userId).then(result => {
-        return result.json();
-      }).then(data => {
-        const traverse = new Traverse();
-        let user = () => {
-          return (
-            <span>{data.firstname} {data.lastname}</span>
-          )
-        }
+      return result.json();
+    }).then(data => {
+      const traverse = new Traverse();
+      let user = () => {
+        return (
+          <span>{data.firstname} {data.lastname}</span>
+        )
+      }
 
-        let picture = () => {
-          var url = "/assets/" + data.picture;
-          return (
-            <img src={url} className="profile-pic" />
-          )
-        }
+      let picture = () => {
+        var url = "/assets/" + data.picture;
+        return (
+          <img src={url} className="profile-pic" />
+        )
+      }
 
-        this.setState({
-          Name: user(),
-          Picture: picture(),
-          Age: data.age,
-          Relationships: data.relationships,
-          Spouse: data.spousename,
-          Dependents: data.dependents,
-          Children: traverse.run(data.children),
-          Employer: data.employer
-        })
-      }).catch((error) => {
-        // Handle the error
-        console.log(error);
+      this.setState({
+        Name: user(),
+        Picture: picture(),
+        Age: data.age,
+        Relationships: data.relationships,
+        Spouse: data.spousename,
+        Dependents: data.dependents,
+        Children: traverse.run(data.children),
+        Employer: data.employer
       })
+    }).catch((error) => {
+      // Handle the error
+      console.log(error);
+    })
   }
 
   record(key, val) {
