@@ -18,10 +18,10 @@ class MyCurve extends Component {
     this.def = {
       bal: 0,
       principal: 0,
-      contrib: 1500,
-      yrs: 30,
-      retire: 20,
-      rate: 12,
+      contrib: 5000,
+      yrs: 80,
+      retire: 30,
+      rate: 5,
       w_rate: 4
     };
   }
@@ -53,6 +53,7 @@ class MyCurve extends Component {
     //clear first
     d3.select("#Canvas").selectAll("path").remove();
     d3.select("#Canvas").selectAll("g").remove();
+    d3.select("#Canvas").selectAll("rect").remove();
 
     //then draw chart canvas
     var vis = d3.select("#Canvas"),
@@ -62,7 +63,7 @@ class MyCurve extends Component {
         top: 50,
         right: 20,
         bottom: 50,
-        left: 50
+        left: 60
       };
     const svg = d3.select("#Canvas")
       .attr("width", WIDTH)
@@ -103,9 +104,22 @@ class MyCurve extends Component {
         return yScale(d.principal);
       }).curve(d3.curveBasis);
 
+    console.log("Retirement Year: " + retire)
+
+    var Xwd = WIDTH - (MARGINS.right + MARGINS.left), // width of the chart area
+      fudge = 5, // fudge about 5 px
+      ltGreen = "#def7de";
+
+    vis.append('rect')
+      .attr("x", MARGINS.left)
+      .attr("y", MARGINS.bottom)
+      .attr("width", Xwd * (retire / yrs) + fudge)
+      .attr("height", HEIGHT - (MARGINS.top + MARGINS.bottom))
+      .attr("fill", ltGreen);
+
     dataGroup.forEach(function (d, i) {
       var theKey = d.key;
-      console.log(theKey, d.year, d.principal);
+      console.log(theKey, d.values);
       vis.append('svg:path')
         .attr('d', lineGen(d.values))
         .attr('stroke', function (d, j) {
