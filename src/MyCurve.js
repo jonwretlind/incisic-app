@@ -18,35 +18,70 @@ class MyCurve extends Component {
     this.def = {
       bal: 0,
       principal: 0,
-      contrib: 5000,
-      yrs: 80,
-      retire: 30,
-      rate: 5,
-      w_rate: 4
+      contrib: 6000,
+      yrs: 50,
+      retire: 20,
+      rate: 8,
+      w_rate: 4,
+      wdraw: 30,
+      blackbox: false
     };
   }
 
   componentDidMount() {
-    this.drawChart(this.def.principal, this.def.contrib, this.def.yrs, this.def.retire, this.def.rate, this.def.w_rate);
+    this.drawChart(this.def.principal, this.def.contrib, this.def.yrs, this.def.retire, this.def.rate, this.def.w_rate, this.def.blackbox);
   }
 
-  drawChart(principal, contrib, yrs, retire, rate, w_rate) {
+  drawChart(principal, contrib, yrs, retire, rate, w_rate, wdraw, blackbox) {
     //compound curve 1
     //create a dataset
     // EOY contributions
     let dataSet = [];
+
+    // LOOP to calculate curves1 and create datablocks for the Acc Curve
     for (var n = 0; n < yrs; n++) {
       let r = rate / 100; // convert percentage
       let _bal = this.def.bal + principal + contrib;
       principal = finance.CI(r, 1, _bal, n);
+
+      // get the principal at time of retirement for the beginning of the widthdrawal curve
+      var retPrincipal; if ( n == retire ) retPrincipal = principal;
+
       let dataBlock = {
-        "Phase": "Accumulation Phase",
+        "Phase": "Accumulation",
         "year": n,
         "contrib": contrib,
         "years": yrs,
         "principal": finance.FV(r, principal, n),
         "retirement": retire,
-        "balance": _bal
+        "balance": _bal,
+        "withdrawal": wdraw,
+      }
+      dataSet.push(dataBlock);
+    }
+    // LOOP to calculate curves2 and create datablocks for the Wd Curve
+    principal = retPrincipal; // set the starting pt for this curve
+    for (var n = retire; n < yrs; n++) {
+      let _bal = principal;
+      let r = rate / 100; // convert percentage & invert
+      let amt = principal * r;
+      _bal += amt;
+      principal = finance.CI(r, 1, _bal, n);
+
+      let wr = w_rate / 100 * -1; // convert percentage & invert
+      let wAmt = principal * wr; // add amt of interest
+      _bal += wAmt;
+      principal = finance.CI(wr-r, 1, _bal, n);
+
+      let dataBlock = {
+        "Phase": "",
+        "year": n,
+        "contrib": wAmt,
+        "years": yrs,
+        "principal": finance.FV(r, principal, n),
+        "retirement": retire,
+        "balance": _bal,
+        "withdrawal": wdraw,
       }
       dataSet.push(dataBlock);
     }
@@ -54,9 +89,10 @@ class MyCurve extends Component {
     d3.select("#Canvas").selectAll("path").remove();
     d3.select("#Canvas").selectAll("g").remove();
     d3.select("#Canvas").selectAll("rect").remove();
+    d3.select("#Canvas").selectAll("text").remove();
 
     //then draw chart canvas
-    var vis = d3.select("#Canvas"),
+    var cv = d3.select("#Canvas"),
       WIDTH = 800,
       HEIGHT = 400,
       MARGINS = {
@@ -70,9 +106,11 @@ class MyCurve extends Component {
       .attr("height", HEIGHT);
 
     var dataGroup = d3.nest()
-      .key(function (d) {
-        return d.Phase;
-      })
+      .key(function (d) { return d.Phase })
+      .entries(dataSet);
+
+    var dataGroup2 = d3.nest()
+      .key(function (d) { return d.Phase })
       .entries(dataSet);
 
     var lSpace = WIDTH / dataGroup.length; // length of each unit
@@ -93,11 +131,13 @@ class MyCurve extends Component {
         return d.principal;
       })]);
 
-    var xAxis = d3.axisBottom(xScale);
-    var yAxis = d3.axisLeft(yScale);
+
+    var xAxis = d3.axisBottom(xScale),
+        yAxis = d3.axisLeft(yScale);
 
     var lineGen = d3.line()
       .x(function (d) {
+        //if ( d.year > retire+1 ) return;
         return xScale(d.year);
       })
       .y(function (d) {
@@ -108,61 +148,78 @@ class MyCurve extends Component {
 
     var Xwd = WIDTH - (MARGINS.right + MARGINS.left), // width of the chart area
       fudge = 5, // fudge about 5 px
-      ltGreen = "#def7de";
+      ltGreen = "#def7de",
+      ghost = "rgba(255,255,255,0.8)",
+      accWd = Xwd * (retire / yrs) + fudge, // width of the Accumulation
+      wdWd = (Xwd - accWd) + yrs + fudge; // width of the Withdrawal
 
-    vis.append('rect')
+    cv.append('rect')
       .attr("x", MARGINS.left)
       .attr("y", MARGINS.bottom)
-      .attr("width", Xwd * (retire / yrs) + fudge)
+      .attr("width", accWd)
       .attr("height", HEIGHT - (MARGINS.top + MARGINS.bottom))
       .attr("fill", ltGreen);
 
-    dataGroup.forEach(function (d, i) {
-      var theKey = d.key;
-      console.log(theKey, d.values);
-      vis.append('svg:path')
+    var c1 = [dataGroup[0]];
+    c1.forEach(function (d, i) {
+      cv.append('svg:path')
         .attr('d', lineGen(d.values))
         .attr('stroke', function (d, j) {
-          return "hsl(207,80%,40%)";
+          return "hsl(207,80%,40%)"; //blue
         })
         .attr('stroke-width', 2)
-        .attr('id', 'line_' + theKey)
-        .attr('fill', 'none');
+        .attr('id', 'line_' + d.key)
+        .attr('fill', 'none')
+        .attr('width', retire);
 
-      vis.append("text")
-        .attr("x", (lSpace / 2) - 50)
+      cv.append("text")
+        .attr("x", (accWd / 2) - 20)
         .attr("y", HEIGHT)
         .style("fill", "black")
         .attr("id", "Legend")
-        .text(d.key)
+        .text(d.key);
     });
 
-    vis.append("svg:g")
+    // cover the rest with another rect to gray the curve in bg
+    cv.append('rect')
+      .attr("x", MARGINS.left + accWd)
+      .attr("y", MARGINS.bottom)
+      .attr("width", Xwd - accWd)
+      .attr("height", HEIGHT - (MARGINS.top + MARGINS.bottom))
+      .attr("fill", ghost);
+
+    // draw curve 2 widthdrawal
+      var c2 = [dataGroup[1]];
+      c2.forEach(function (d, i) {
+        cv.append('svg:path')
+          .attr('d', lineGen(d.values))
+          .attr('stroke', function (d, j) {
+            return "hsl(16, 66%, 44%)"; //red
+          })
+          .attr('stroke-width', 2)
+          .attr('id', 'line_' + d.key)
+          .attr('fill', 'none')
+          .attr('width', retire);
+
+        cv.append("text")
+          .attr("x", (accWd + wdWd / 2) - 10)
+          .attr("y", HEIGHT)
+          .style("fill", "black")
+          .attr("id", "Legend")
+          .text(d.key);
+      });
+/*
+    /* CHART AXIS */
+    cv.append("svg:g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
       .call(xAxis);
 
-    vis.append("svg:g")
+    cv.append("svg:g")
       .attr("class", "axis")
       .attr("transform", "translate(" + (MARGINS.left) + ",0)")
       .call(yAxis);
 
-    /*  const lineGenerator = d3
-         .line()
-         .x((d) => xScale(xAccessor(d)))
-         .y((d) => yScale(yAccessor(d)))
-         .curve(d3.curveBasis);
-  
-      svg.selectAll("rect")
-          .data(data)
-          .enter()
-          .append("path")
-          .attr("x", (d, i) => i * 70)
-          .attr("y", (d, i) => h - 10 * d)
-          .attr("width", 65)
-          .attr("height", (d, i) => d * 10)
-          .attr("fill", "green");
-          */
   }
 
   calc(event) {
@@ -172,13 +229,15 @@ class MyCurve extends Component {
     var rt = (document.getElementById('retirement').value == "") ? parseInt(this.def.retire) : parseInt(document.getElementById('retirement').value);
     var r = (document.getElementById('rate').value == "") ? parseInt(this.def.rate) : parseInt(document.getElementById('rate').value);
     var w = (document.getElementById('withdrawal_rt').value == "") ? parseInt(this.def.w_rate) : parseInt(document.getElementById('withdrawal_rt').value);
+    console.log((document.getElementById('blackbox_plan')));
+    var bb = (document.getElementById('blackbox_plan').value);
 
-    console.log("CHANGED: " + p, c, y, rt, r, w);
-    this.drawChart(p, c, y, rt, r, w);
+    console.log("CHANGED: " + p, c, y, rt, r, w, bb);
+    this.drawChart(p, c, y, rt, r, w, bb);
   }
 
   render() {
-    console.log(this.def.principal, this.def.contrib, this.def.yrs, this.def.retire, this.def.rate, this.def.w_rate);
+    console.log(this.def.principal, this.def.contrib, this.def.yrs, this.def.retire, this.def.rate, this.def.w_rate, this.def.blackbox);
     return (
       <Box
         sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}
@@ -225,6 +284,14 @@ class MyCurve extends Component {
                     <input type="number"
                       id="withdrawal_rt"
                       placeholder={this.def.w_rate} />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label>Black Box?</label>
+                    <input type="radio"
+                      id="blackbox_plan"
+                      value={false}/>
                   </td>
                 </tr>
               </tbody>
