@@ -1,5 +1,6 @@
 import './Tools.css';
-import SimpleInterestCalc from './SimpleInterestCalc'
+import SimpleInterestCalc from './SimpleInterestCalc';
+import RORCalc from './RORCalc';
 import { withStyles } from '@mui/material/styles';
 import * as React from 'react';
 import PropTypes from 'prop-types';
@@ -68,6 +69,7 @@ export default function Tools() {
         <SimpleInterestCalc />
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <RORCalc />
       </TabPanel>
       <TabPanel value={value} index={2}>
       </TabPanel>

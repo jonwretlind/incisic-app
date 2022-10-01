@@ -1,0 +1,47 @@
+#RORCalcWrapper {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 750px;
+}
+#RORCalcWrapper > button {
+  margin-left: 2em;
+}
+.columns label {
+  padding: 20px 0 0 0;
+  font-size: .8rem;
+}
+#CalcResult {
+  padding-left: 10px;
+  font-weight: 500;
+  font-size: 3em;
+  color: #01579b;
+}
+
+#RORCalcWrapper .columns {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+#RORCalcWrapper .columns .col1 {
+  padding-right: 2em;
+}
+
+.col1 > div, .col2 > div {
+  padding: 10px 10px 0px 10px;
+}
+
+.columns input {
+    border-radius: 0px;
+    border: 1px solid silver;
+}
+.help {
+    border: 0.5px solid #aaa;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+}
