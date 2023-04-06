@@ -9,7 +9,7 @@
  * @usage RATE($periods, $payment, $present, $future, $type, $guess)
  */
 
-function RATE (periods, payment, present, future, type, guess) {
+function Rate(periods, payment, present, future, type, guess) {
     guess = (guess === undefined) ? 0.01 : guess;
     future = (future === undefined) ? 0 : future;
     type = (type === undefined) ? 0 : type;
@@ -51,4 +51,4 @@ function RATE (periods, payment, present, future, type, guess) {
     }
     return rate;
 };
-export default RATE;
+export default Rate;

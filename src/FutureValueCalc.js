@@ -12,9 +12,9 @@ var _this;
 class FutureValueCalc extends Component {
       constructor() {
         super();
-        this.def = {  presVal: 1000,
+        this.def = {  presVal: 0,
                       interestRate: 2,
-                      annualContributions: 1200,
+                      annualContributions: 1000,
                       numYears: 40
                     };
         this.FV = FV;
@@ -52,7 +52,6 @@ class FutureValueCalc extends Component {
             break;
         }
 
-        console.log("The value of " + ID + " is: " + val);
         document.getElementById(ID).value = val.toLocaleString();
       }
 
@@ -60,15 +59,26 @@ class FutureValueCalc extends Component {
         // * @usage RATE($periods, $payment, $present, $future, $type, $guess)
         console.log(_this.def.numYears, _this.def.annualContributions, _this.def.presVal, _this.def.interestRate);
         var per =   _this.def.numYears,
-            cont =  -(_this.def.annualContributions),
+            cont =  _this.def.annualContributions,
             pv =    _this.def.presVal,
-            int =   _this.def.interestRate;
-        console.log(per, cont, pv, int);
-        var fv = (_this.FV(int/100, per, cont, pv)).toFixed(2);
+            int =   _this.def.interestRate,
+            fv = 0,
+            ac = pv;
+        //finance.FV(rate, nper, pmt, pv, [type]);
+        for (var i = 0; i < per; i++) {
+          fv = ac*(1+(int/100));
+          ac = fv + cont;
+        };
+        fv = (fv+pv); // add in the pv at the end and round it
+
         var calcResult = document.getElementById("CalcResult");
         var calcLabel = document.getElementById("CalcLabel");
         calcLabel.innerHTML = "The Future Value is"
-        calcResult.innerHTML = "$" + fv.toLocaleString();
+        calcResult.innerHTML = "$" + fv.toLocaleString(undefined, {
+                                                      minimumFractionDigits: 2,
+                                                      maximumFractionDigits: 2
+                                                    });
+
       }
 
       render() {

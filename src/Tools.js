@@ -1,5 +1,6 @@
 import './Tools.css';
 import SimpleInterestCalc from './SimpleInterestCalc';
+import FutureValueCalc from './FutureValueCalc';
 import RORCalc from './RORCalc';
 import { withStyles } from '@mui/material/styles';
 import * as React from 'react';
@@ -62,6 +63,7 @@ export default function Tools() {
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
         <Tab label="Simple Interest" {...a11yProps(0)} />
+        <Tab label="Future Value" {...a11yProps(0)} />
         <Tab label="Average vs. Actual ROR" {...a11yProps(1)} />
         <Tab label="Black Box Planning" {...a11yProps(2)} />
       </Tabs>
@@ -69,9 +71,12 @@ export default function Tools() {
         <SimpleInterestCalc />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <RORCalc />
+        <FutureValueCalc />
       </TabPanel>
       <TabPanel value={value} index={2}>
+        <RORCalc />
+      </TabPanel>
+      <TabPanel value={value} index={3}>
       </TabPanel>
     </Box>
   );

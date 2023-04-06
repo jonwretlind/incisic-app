@@ -3,15 +3,8 @@
   of an annuity
 */
 
-function FV(int, per, cont, pv) {
-  var pow = Math.pow(1 + int, per),
-     fv;
-  if (int) {
-   fv = (cont*(1+int)*(1-pow)/int)-pv*pow;
-  } else {
-   fv = -1 * (pv + cont * per);
-  }
-  return fv;
+function FVAnnuity(amount, rate, numPeriods) {
+  return amount * ((Math.pow(1 + rate, numPeriods) - 1) / rate);
 }
 
-export default FV;
+export default FVAnnuity;
