@@ -1,6 +1,5 @@
 import './SimpleInterestCalc.css';
-import RATE from './helpers/rate.js';
-import Finance from 'financejs';
+import GoalSeekSimpleInt from './helpers/goalseekSimpleInt'
 import ToolTip from './snippets/tooltip.js';
 import React from 'react';
 import { Component } from 'react';
@@ -8,7 +7,7 @@ import { withStyles } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-const finance = new Finance();
+const GS = new GoalSeekSimpleInt();
 var _this;
 
 class SimpleInterestCalc extends Component {
@@ -18,9 +17,9 @@ class SimpleInterestCalc extends Component {
       presVal: 0,
       futureVal: 1000000,
       annualContributions: 1200,
-      numYears: 40
+      numYears: 40,
+      rate: 0,
     };
-    this.RATE = RATE;
     _this = this;
   }
 
@@ -36,14 +35,16 @@ class SimpleInterestCalc extends Component {
     // * @usage RATE($periods, $payment, $present, $future, $type, $guess)
     console.log(_this.def.numYears, _this.def.annualContributions, _this.def.presVal, _this.def.futureVal);
     var per = _this.def.numYears,
-      cont = _this.def.annualContributions * -1,
+      cont = _this.def.annualContributions,
       pv = _this.def.presVal,
-      fv = _this.def.futureVal;
-    var rate = (_this.RATE(per, cont, pv, fv, 0, 1) * 100).toFixed(2);
+      fv = _this.def.futureVal,
+      rate = GS.seek(pv, cont, per, fv);
+
+    //var rate = Math.pow((fv/pv),(1/per))-1;
     var calcResult = document.getElementById("CalcResult");
     var calcLabel = document.getElementById("CalcLabel");
     calcLabel.innerHTML = "The Interest Rate is"
-    calcResult.innerHTML = rate + "%";
+    calcResult.innerHTML = rate.toFixed(2) + "%";
   }
 
   render() {

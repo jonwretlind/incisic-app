@@ -62,14 +62,16 @@ class FutureValueCalc extends Component {
             cont =  _this.def.annualContributions,
             pv =    _this.def.presVal,
             int =   _this.def.interestRate,
-            fv = 0,
+            fv = pv,
             ac = pv;
         //finance.FV(rate, nper, pmt, pv, [type]);
         for (var i = 0; i < per; i++) {
-          fv = ac*(1+(int/100));
           ac = fv + cont;
+          var intEarned = ac * int * per;
+          fv = ac*(1+(int/100));
+          ac += intEarned;
         };
-        fv = (fv+pv); // add in the pv at the end and round it
+        //fv = (fv+pv); // add in the pv at the end and round it
 
         var calcResult = document.getElementById("CalcResult");
         var calcLabel = document.getElementById("CalcLabel");
