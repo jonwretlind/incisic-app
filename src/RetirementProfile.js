@@ -1,14 +1,13 @@
 import './RetirementProfile.css';
-import { withStyles } from '@mui/material/styles';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 
 function RetirementProfile() {
-  const [value, setValue] = React.useState(0);
+ // const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
+  /* const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
+  }; */
 
   return (
     <Box sx={{

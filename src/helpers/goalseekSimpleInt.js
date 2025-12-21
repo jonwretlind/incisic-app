@@ -1,11 +1,5 @@
 
-import React, { Component } from 'react';
-
-class GoalSeekSimpleInt extends React.Component {
-  constructor() {
-    //
-    super();
-  }
+class GoalSeekSimpleInt {
   seek(initialValue, cont, n, targetValue) {   // cont = contribution for that period; n = number of periods
     let rate = .1;  // initial guess for the interest
 

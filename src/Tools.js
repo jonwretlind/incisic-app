@@ -2,7 +2,6 @@ import './Tools.css';
 import SimpleInterestCalc from './SimpleInterestCalc';
 import FutureValueCalc from './FutureValueCalc';
 import RORCalc from './RORCalc';
-import { withStyles } from '@mui/material/styles';
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';

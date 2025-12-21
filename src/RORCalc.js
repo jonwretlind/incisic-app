@@ -3,11 +3,8 @@ import GoalSeek from './helpers/goalseek.js';
 import Finance from 'financejs';
 import ToolTip from './snippets/tooltip.js';
 import React, { Component } from 'react';
-import { useEffect } from 'react';
-import { withStyles } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import $ from "jquery";
 
 const finance = new Finance();
 var _this;
@@ -24,7 +21,7 @@ class RORCalc extends Component {
       percentStocks: 100,
       percentBonds: 0,
       percentTreas: 0,
-      api: "http://incisic.com:5000/all",
+      api: "http://localhost:5000/all",
       econData: null,
       items: null,
       histData: [],
@@ -47,7 +44,7 @@ class RORCalc extends Component {
       .then(data => {
         this.def.histData = data; // put the data into global histData array
         for (var i = 0; i <= this.def.histData.length; i++) {
-          if (this.def.histData[i].Year == this.def.startYear) {
+          if (this.def.histData[i].Year === this.def.startYear) {
             this.yearIndex = i;
             break;
           }
@@ -111,16 +108,16 @@ class RORCalc extends Component {
     // Years from Start	| Year	| Balance BOY	| Interest Rate	| Annual Payment	| Management Fee	| Balance EOY
     console.log(year, balBOY, intRate, annPay, mngFee, balEOY);
     let table = document.getElementById('CalcTable');
-    let tableRow = `<div class='row'><div class='year'>${year}</div><div class='balBOY'>$${balBOY.toLocaleString()}</div><div class='intRate'>${intRate}%</div><div class='annPay'>$<input id='contrib-${idx}' value='${annPay.toLocaleString()}' onchange='var val = Number(this.value.replace(/\,/g,"")); console.log(this.id, val, typeof val, ${this.def.dataTable[idx-1].annPay});'/></div><div class='mngFee'>$${mngFee.toLocaleString()}</div><div class='balEOY'>$${balEOY.toLocaleString()}</div></div>`;
+    let tableRow = `<div class='row'><div class='year'>${year}</div><div class='balBOY'>$${balBOY.toLocaleString()}</div><div class='intRate'>${intRate}%</div><div class='annPay'>$<input id='contrib-${idx}' value='${annPay.toLocaleString()}' onchange='var val = Number(this.value.replace(/,/g,"")); console.log(this.id, val, typeof val, ${this.def.dataTable[idx-1].annPay});'/></div><div class='mngFee'>$${mngFee.toLocaleString()}</div><div class='balEOY'>$${balEOY.toLocaleString()}</div></div>`;
     table.innerHTML += tableRow;
   }
 
   changed(event) {
-    _this.def.BOY = (document.getElementById('BOY').value == "") ? _this.def.BOY : +(document.getElementById('BOY').value);
-    _this.def.annPay = (document.getElementById('annPay').value == "") ? _this.def.annPay : +(document.getElementById('annPay').value);
-    _this.def.mngFee = (document.getElementById('mngFee').value == "") ? _this.def.mngFee : +(document.getElementById('mngFee').value);
-    _this.def.startYear = (document.getElementById('startYear').value == "") ? _this.def.startYear : +(document.getElementById('startYear').value);
-    _this.def.numYears = (document.getElementById('numYears').value == "") ? _this.def.numYears : +(document.getElementById('numYears').value);
+    _this.def.BOY = (document.getElementById('BOY').value === "") ? _this.def.BOY : +(document.getElementById('BOY').value);
+    _this.def.annPay = (document.getElementById('annPay').value === "") ? _this.def.annPay : +(document.getElementById('annPay').value);
+    _this.def.mngFee = (document.getElementById('mngFee').value === "") ? _this.def.mngFee : +(document.getElementById('mngFee').value);
+    _this.def.startYear = (document.getElementById('startYear').value === "") ? _this.def.startYear : +(document.getElementById('startYear').value);
+    _this.def.numYears = (document.getElementById('numYears').value === "") ? _this.def.numYears : +(document.getElementById('numYears').value);
   }
 
   updateTable(event) {
@@ -131,7 +128,7 @@ class RORCalc extends Component {
     //reset the dataTable and yearIndex first
     _this.def.dataTable = [];
     for (var i = 0; i <= _this.def.histData.length; i++) {
-      if (_this.def.histData[i].Year == _this.def.startYear) {
+      if (_this.def.histData[i].Year === _this.def.startYear) {
         _this.yearIndex = i;
         break;
       }

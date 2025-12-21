@@ -19,6 +19,7 @@ module.exports = {
     try {
       let user = await UserData.findOne({_id: request.params.id});
       reply.code(200).send(user);
+      console.log(user);
     } catch (e) {
       reply.code(500).send(e);
     }

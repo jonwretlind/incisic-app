@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/node-app-OLD
 /.pnp
 .pnp.js
 
@@ -23,4 +24,5 @@ yarn-debug.log*
 yarn-error.log*
 
 .node-app_OLD
-,node-app_OLD.zip
+.node-app_OLD.zip
+

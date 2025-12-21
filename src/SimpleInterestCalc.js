@@ -3,7 +3,6 @@ import GoalSeekSimpleInt from './helpers/goalseekSimpleInt'
 import ToolTip from './snippets/tooltip.js';
 import React from 'react';
 import { Component } from 'react';
-import { withStyles } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
@@ -24,10 +23,10 @@ class SimpleInterestCalc extends Component {
   }
 
   changed(event) {
-    _this.def.presVal = (document.getElementById('presVal').value == "") ? _this.def.presVal : Number(document.getElementById('presVal').value);
-    _this.def.futureVal = (document.getElementById('futureVal').value == "") ? _this.def.futureVal : Number(document.getElementById('futureVal').value);
-    _this.def.annualContributions = (document.getElementById('annualContributions').value == "") ? _this.def.annualContributions : Number(document.getElementById('annualContributions').value);
-    _this.def.numYears = (document.getElementById('numYears').value == "") ? _this.def.numYears : Number(document.getElementById('numYears').value);
+    _this.def.presVal = (document.getElementById('presVal').value === "") ? _this.def.presVal : Number(document.getElementById('presVal').value);
+    _this.def.futureVal = (document.getElementById('futureVal').value === "") ? _this.def.futureVal : Number(document.getElementById('futureVal').value);
+    _this.def.annualContributions = (document.getElementById('annualContributions').value === "") ? _this.def.annualContributions : Number(document.getElementById('annualContributions').value);
+    _this.def.numYears = (document.getElementById('numYears').value === "") ? _this.def.numYears : Number(document.getElementById('numYears').value);
   }
 
 

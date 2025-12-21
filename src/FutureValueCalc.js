@@ -1,10 +1,8 @@
 import './FutureValueCalc.css';
 import FV from './helpers/fv.js';
-import Finance from 'financejs';
 import ToolTip from './snippets/tooltip.js';
 import React from 'react';
 import { Component } from 'react';
-import { withStyles } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 var _this;
@@ -22,16 +20,16 @@ class FutureValueCalc extends Component {
       }
 
       changed(event) {
-        _this.def.presVal = (document.getElementById('presVal').value == "")   ? _this.def.presVal : convert(document.getElementById('presVal').value);
+        _this.def.presVal = (document.getElementById('presVal').value === "")   ? _this.def.presVal : convert(document.getElementById('presVal').value);
 
-        _this.def.interestRate = (document.getElementById('interestRate').value == "")   ? _this.def.interestRate : convert(document.getElementById('interestRate').value);
+        _this.def.interestRate = (document.getElementById('interestRate').value === "")   ? _this.def.interestRate : convert(document.getElementById('interestRate').value);
 
-        _this.def.annualContributions = (document.getElementById('annualContributions').value == "")   ? _this.def.annualContributions  : convert(document.getElementById('annualContributions').value);
+        _this.def.annualContributions = (document.getElementById('annualContributions').value === "")   ? _this.def.annualContributions  : convert(document.getElementById('annualContributions').value);
 
-        _this.def.numYears = (document.getElementById('numYears').value == "")   ? _this.def.numYears : convert(document.getElementById('numYears').value);
+        _this.def.numYears = (document.getElementById('numYears').value === "")   ? _this.def.numYears : convert(document.getElementById('numYears').value);
 
         function convert(ele) {
-          return Number(ele.replace(/[\,]+/g, ""));
+          return Number(ele.replace(/[,]+/g, ""));
         }
       }
 
@@ -50,6 +48,8 @@ class FutureValueCalc extends Component {
           case "numYears" :
             val = _this.def.numYears;
             break;
+          default: 
+            val = "";
         }
 
         document.getElementById(ID).value = val.toLocaleString();

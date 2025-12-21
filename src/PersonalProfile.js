@@ -1,17 +1,15 @@
 import './PersonalProfile.css';
-import { withStyles } from '@mui/material/styles';
 import React, { Component } from 'react';
 import Box from '@mui/material/Box';
 import Traverse from './helpers/traverse';
 
 // TODO: User logins with uiuds
 // this one is just hard-coded for testing and building
-let relAddr = window.location.href.split(":")[1];
-let userId = "62c098ec1825037420a950f9";
+//let relAddr = window.location.href.split(":")[1];
+let userId = "65f4877528ff1d43a838f10b";
 // API port 3001 is proxied on remote Nginx server
 // to port 4000 in /etc/nginx/sites-enabled/incisic
-let api = "http://apps.jonwretlind.com:3001/api/user/";
-console.log(api + userId);
+let api = "http://localhost:4000/api/user/";
 
 class PersonalProfile extends Component {
   constructor() {
@@ -30,6 +28,7 @@ class PersonalProfile extends Component {
 
   componentDidMount() {
     fetch(api + userId).then(result => {
+      console.log(api + userId);
       return result.json();
     }).then(data => {
       const traverse = new Traverse();
@@ -42,7 +41,7 @@ class PersonalProfile extends Component {
       let picture = () => {
         var url = "/assets/" + data.picture;
         return (
-          <img src={url} className="profile-pic" />
+          <img src={url} className="profile-pic" alt="User profile pic" />
         )
       }
 

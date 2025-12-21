@@ -2,7 +2,6 @@ import './UserProfile.css';
 import PersonalProfile from './PersonalProfile'
 import FinancialProfile from './FinancialProfile'
 import RetirementProfile from './RetirementProfile'
-import { withStyles } from '@mui/material/styles';
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';

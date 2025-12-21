@@ -1,11 +1,4 @@
-
-import React, { Component } from 'react';
-
-class GoalSeek extends React.Component {
-  constructor() {
-    //
-    super();
-  }
+class GoalSeek {
   seek(initialValue, dataTable, targetValue) {
     const n = dataTable.length;  // number of periods
     let rate = .1;  // initial guess for the rate of return

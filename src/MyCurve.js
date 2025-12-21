@@ -1,12 +1,8 @@
 /* jshint esversion: 8 */
 import './MyCurve.css';
-import { withStyles } from '@mui/material/styles';
 import React, { Component } from 'react';
 import * as d3 from "d3";
 import Finance from 'financejs';
-import Tabs from '@mui/material/Tabs';
-import Typography from '@mui/material/Typography';
-import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
@@ -32,7 +28,7 @@ class MyCurve extends Component {
     this.drawChart(this.def.principal, this.def.contrib, this.def.yrs, this.def.retire, this.def.rate, this.def.w_rate, this.def.blackbox);
   }
 
-  drawChart(principal, contrib, yrs, retire, rate, w_rate, wdraw, blackbox) {
+  drawChart(principal, contrib, yrs, retire, rate, w_rate, wdraw) {
     //compound curve 1
     //create a dataset
     // EOY contributions
@@ -45,7 +41,7 @@ class MyCurve extends Component {
       principal = finance.CI(r, 1, _bal, n);
 
       // get the principal at time of retirement for the beginning of the widthdrawal curve
-      var retPrincipal; if ( n == retire ) retPrincipal = principal;
+      var retPrincipal; if ( n === retire ) retPrincipal = principal;
 
       let dataBlock = {
         "Phase": "Accumulation",
@@ -61,7 +57,7 @@ class MyCurve extends Component {
     }
     // LOOP to calculate curves2 and create datablocks for the Wd Curve
     principal = retPrincipal; // set the starting pt for this curve
-    for (var n = retire; n < yrs; n++) {
+    for (n = retire; n < yrs; n++) {
       let _bal = principal;
       let r = rate / 100; // convert percentage & invert
       let amt = principal * r;
@@ -101,19 +97,19 @@ class MyCurve extends Component {
         bottom: 50,
         left: 60
       };
-    const svg = d3.select("#Canvas")
+    /*const svg = d3.select("#Canvas")
       .attr("width", WIDTH)
-      .attr("height", HEIGHT);
+      .attr("height", HEIGHT);*/
 
     var dataGroup = d3.nest()
       .key(function (d) { return d.Phase })
       .entries(dataSet);
 
-    var dataGroup2 = d3.nest()
+    /*var dataGroup2 = d3.nest()
       .key(function (d) { return d.Phase })
-      .entries(dataSet);
+      .entries(dataSet);*/
 
-    var lSpace = WIDTH / dataGroup.length; // length of each unit
+    //var lSpace = WIDTH / dataGroup.length; // length of each unit
 
     var xScale = d3.scaleLinear()
       .range([MARGINS.left, WIDTH - MARGINS.right])
@@ -223,12 +219,12 @@ class MyCurve extends Component {
   }
 
   calc(event) {
-    var p = (document.getElementById('starting_amt').value == "") ? parseInt(this.def.principal) : parseInt(document.getElementById('starting_amt').value);
-    var c = (document.getElementById('contributions').value == "") ? parseInt(this.def.contrib) : parseInt(document.getElementById('contributions').value);
-    var y = (document.getElementById('years').value == "") ? parseInt(this.def.yrs) : parseInt(document.getElementById('years').value);
-    var rt = (document.getElementById('retirement').value == "") ? parseInt(this.def.retire) : parseInt(document.getElementById('retirement').value);
-    var r = (document.getElementById('rate').value == "") ? parseInt(this.def.rate) : parseInt(document.getElementById('rate').value);
-    var w = (document.getElementById('withdrawal_rt').value == "") ? parseInt(this.def.w_rate) : parseInt(document.getElementById('withdrawal_rt').value);
+    var p = (document.getElementById('starting_amt').value === "") ? parseInt(this.def.principal) : parseInt(document.getElementById('starting_amt').value);
+    var c = (document.getElementById('contributions').value === "") ? parseInt(this.def.contrib) : parseInt(document.getElementById('contributions').value);
+    var y = (document.getElementById('years').value === "") ? parseInt(this.def.yrs) : parseInt(document.getElementById('years').value);
+    var rt = (document.getElementById('retirement').value === "") ? parseInt(this.def.retire) : parseInt(document.getElementById('retirement').value);
+    var r = (document.getElementById('rate').value === "") ? parseInt(this.def.rate) : parseInt(document.getElementById('rate').value);
+    var w = (document.getElementById('withdrawal_rt').value === "") ? parseInt(this.def.w_rate) : parseInt(document.getElementById('withdrawal_rt').value);
     console.log((document.getElementById('blackbox_plan')));
     var bb = (document.getElementById('blackbox_plan').value);
 

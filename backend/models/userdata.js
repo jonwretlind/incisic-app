@@ -14,6 +14,6 @@ let userData = new Schema({
     child_3:        String,
     employer:       String,
     annual_income:  Number
-}, {collection: 'userCollection'});
-const userModel = mongoose.model("UserProfile", userData);
+}, {collection: 'user'});
+const userModel = mongoose.model("user", userData);
 module.exports = userModel;

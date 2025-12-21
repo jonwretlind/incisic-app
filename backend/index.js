@@ -5,7 +5,9 @@ const mongoose = require("mongoose");
 const PORT = 4000;
 const DB_URL = "mongodb://127.0.0.1:27017/incisic_app";
 const userRoutes = require('./routes/user')
+const schillerRoutes = require('./routes/schiller')
 const userData = require("./models/userdata");
+const schillerData = require("./models/schillerDataModel");
 const contentRangeHook = require('./hooks/contentRangeHook');
 const app = fastify;
 

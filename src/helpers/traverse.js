@@ -21,7 +21,7 @@ class Traverse {
        if (typeof val === 'object') {
          var val2 = Object.values(data[key]);
          this.result.push(val2);
-         if (! val2 == "undefined") this.loop(val2); //recursive
+         if (! val2 === "undefined") this.loop(val2); //recursive
        };
       }
 
