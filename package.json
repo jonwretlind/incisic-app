@@ -16,18 +16,20 @@
     "d3-node": "^1.1.1",
     "express": "^4.17.1",
     "financejs": "^4.1.0",
+    "konva": "^10.0.12",
     "loader-runner": "^4.3.0",
     "material-ui": "^0.20.2",
     "mongod": "^2.0.0",
     "prop-types": "^15.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-konva": "^19.2.1",
     "react-router-dom": "^5.3.0",
-    "react-scripts": "^4.0.0",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^1.1.2",
     "webpack": "^5.90.3"
   },
-    "scripts": {
+  "scripts": {
     "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "NODE_OPTIONS=--openssl-legacy-provider react-scripts test"
