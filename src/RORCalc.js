@@ -21,11 +21,7 @@ class RORCalc extends Component {
       percentStocks: 100,
       percentBonds: 0,
       percentTreas: 0,
-<<<<<<< HEAD
-      api: "http://localhost:4000/all",
-=======
       api: `${window.location.protocol}//${window.location.hostname}:4000`;,
->>>>>>> refs/remotes/origin/master
       econData: null,
       items: null,
       histData: [],
