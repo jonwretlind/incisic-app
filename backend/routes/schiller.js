@@ -2,6 +2,9 @@
 const SchillerDataController = require('../controllers/schillerDataController');
 
 module.exports = (app) => {
+    // get the list of records
+    app.get('/api/all', SchillerDataController.fetch);
+    
     // create a record
     app.post('/api/schiller', SchillerDataController.create);
 
