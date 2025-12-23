@@ -30,11 +30,16 @@ connection.once("open", function () {
 
 app.addHook('preHandler', contentRangeHook);
 userRoutes(app, userData);
+schillerRoutes(app, schillerData);   
 
-app.get('/', (req, res) => {
-  res.send('Hello, this is the Incisic Backend Server at your service!');
-})
+app.get('/', async (req, reply) => {
+  reply.send('Hello, this is the Incisic Backend Server at your service!');
+});
 
-app.listen(PORT, function () {
-  console.log("Server is running on Port: " + PORT);
+app.listen({ port: PORT, host: "127.0.0.1" }, (err, address) => {
+  if (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
+  app.log.info(`Server listening at ${address}`);
 });
