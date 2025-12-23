@@ -21,7 +21,7 @@ class RORCalc extends Component {
       percentStocks: 100,
       percentBonds: 0,
       percentTreas: 0,
-      api: `http://localhost:4000/api/all`,
+      api: "/api/all",
       econData: null,
       items: null,
       histData: [],
