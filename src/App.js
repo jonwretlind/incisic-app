@@ -1,60 +1,31 @@
-import React, { useState } from 'react';
-import { Box, AppBar, Toolbar, Typography, Container } from '@mui/material';
-import ToolPanel from './components/ToolPanel';
-import Canvas from './components/Canvas';
-import PropertiesPanel from './components/PropertiesPanel';
+import logo from './img/cropped-RGB_Incisic_Final.png';
 import './App.css';
+import * as React from 'react';
+import HomeIcon from '@material-ui/icons/Home';
+import UserIcon from '@material-ui/icons/PersonOutline';
+import AppWindow from './AppWindow';
+import { ThemeProvider } from '@mui/material/styles';
+import Theme from './helpers/theme';
 
 function App() {
-  const [selectedTool, setSelectedTool] = useState('wall');
-  const [selectedElement, setSelectedElement] = useState(null);
-  const [levelData, setLevelData] = useState({
-    level: 1,
-    name: "New Level",
-    ppSpacing: 15,
-    terrain: [],
-    maze: [],
-    powerUps: [],
-    enemies: [],
-    exit: null
-  });
-
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">
-            Hippo Game Level Editor
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      
-      <Container maxWidth="xl" sx={{ mt: 2, display: 'flex', gap: 2 }}>
-        <ToolPanel 
-          selectedTool={selectedTool} 
-          onToolSelect={setSelectedTool} 
-        />
-        
-        <Canvas 
-          levelData={levelData}
-          setLevelData={setLevelData}
-          selectedTool={selectedTool}
-          onElementSelect={setSelectedElement}
-        />
-        
-        <PropertiesPanel 
-          selectedElement={selectedElement}
-          onElementUpdate={(updatedElement) => {
-            // Update the level data with the modified element
-            setLevelData(prev => ({
-              ...prev,
-              // Update the appropriate array based on element type
-            }));
-          }}
-        />
-      </Container>
-    </Box>
+    <ThemeProvider theme={Theme}>
+    <div className="App">
+      <header className="App-header">
+        <div className="col1">
+          <HomeIcon />
+          <UserIcon />
+        </div>
+        <div className="col2">
+          <img src={logo} className="App-logo" alt="logo" />
+          <p>
+            Financial Well-Being Through Sound Instruction
+          </p>
+        </div>
+      </header>
+      <AppWindow />
+    </div>
+    </ThemeProvider>
   );
 }
-
 export default App;
